@@ -7,7 +7,7 @@ import { pool } from "../db.js";
 export const getTasks = async (req, res) => {
 
   try {
-    const [result] = await pool.query("SELECT * FROM Tasks WHERE done = 0");
+    const [result] = await pool.query("SELECT * FROM Tasks ORDER BY createAt ASC");
     res.json(result);
   } catch (error) {
     return res.status(500).json({ message: error.message });
@@ -80,7 +80,7 @@ export const deleteTask = async (req, res) => {
   try {
     const { id } = req.params;
     const [result] = await pool.query(
-      "UPDATE Tasks SET done = 1 WHERE id = ? AND done = 0",
+      "DELETE FROM Tasks WHERE id = ?",
       [id]
     );
     const { affectedRows } = result;
