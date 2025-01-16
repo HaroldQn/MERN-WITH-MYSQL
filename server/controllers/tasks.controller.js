@@ -19,7 +19,7 @@ export const getTask = async (req, res) => {
   try {
     const { id } = req.params;
     const [result] = await pool.query(
-      "SELECT * FROM Tasks WHERE done = 0 AND id = ?",
+      "SELECT * FROM Tasks WHERE id = ?",
       [id]
     );
 
@@ -57,7 +57,7 @@ export const createTask = async (req, res) => {
 export const updateTask = async (req, res) => {
   try {
     const [result] = await pool.query(
-      `UPDATE Tasks SET ? WHERE id = ? AND done = 0`,
+      `UPDATE Tasks SET ? WHERE id = ?`,
       [ req.body, req.params.id ]
     );
     const { affectedRows } = result;

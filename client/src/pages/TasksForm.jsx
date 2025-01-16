@@ -8,67 +8,80 @@ function TasksForm() {
   const [task, setTask] = useState({
     title: "",
     description: "",
-  })
+  });
 
   const { id } = useParams();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
-  useEffect(() =>{
+  useEffect(() => {
     const loadTask = async () => {
       if (id) {
-        const task = await getTask(id)
-        console.log(task)
+        const task = await getTask(id);
+        console.log(task);
         setTask({
           title: task.title,
-          description: task.description
-        })
+          description: task.description,
+        });
       }
-    }
-    loadTask()
-  }, [])
+    };
+    loadTask();
+  }, []);
 
   return (
     <div>
-      <h1>{id ? "Update Task" : "Create Task"}</h1>
-
       <Formik
         initialValues={task}
         enableReinitialize={true}
         onSubmit={async (values, actions) => {
           if (id) {
             updateTask(id, values);
-            navigate('/')
-          }else{
+          } else {
             createTask(values);
           }
+          navigate("/");
           setTask({
             title: "",
             description: "",
           });
-          
         }}
       >
         {({ handleChange, handleSubmit, values, isSubmitting }) => (
-          <Form onSubmit={handleSubmit}>
-            <label htmlFor="">Title</label>
+          <Form
+            onSubmit={handleSubmit}
+            className="bg-slate-300 max-w-md p-4 rounded-md mx-auto mt-10"
+          >
+            <h1 className="text-xl font-bold uppercase text-center">
+              {id ? "Update Task" : "Create Task"}
+            </h1>
+            <label htmlFor="" className="block">
+              Title
+            </label>
             <input
               type="text"
               name="title"
               placeholder="Title"
               onChange={handleChange}
               value={values.title}
+              className="px-2 py-1 rounded-sm w-full"
             />
 
-            <label htmlFor="">Description</label>
+            <label htmlFor="" className="block">
+              Description
+            </label>
             <textarea
               name="description"
               rows="3"
               placeholder="Description"
               onChange={handleChange}
               value={values.description}
+              className="px-2 py-1 rounded-sm w-full"
             />
 
-            <button type="submit" disabled={isSubmitting}>
+            <button
+              type="submit"
+              disabled={isSubmitting}
+              className="block bg-indigo-500 px-2 py-1 rounded-md text-white w-full"
+            >
               {isSubmitting ? "Saving..." : "Save"}
             </button>
           </Form>
